@@ -46,9 +46,11 @@ app.get('/hello', (req, res) => {
   res.render('hello.html');
 });
 
+let name = null
+
 // Handle the form from /hello and greet the user.
 app.get('/greet', (req, res) => {
-  const name = req.query.name || 'stranger';
+  name = req.query.name || 'stranger';
   const compliment = sample(COMPLIMENTS)
   res.render('greet.html.njk', { 
     name: name,
@@ -59,18 +61,23 @@ app.get('/greet', (req, res) => {
 app.get('/game', (req, res) => {
   if (req.query.play === 'no'){
     res.render('goodbye.html.njk',
-    {name: req.query.name})
+    {name: name})
   } else {
-    res.render('game.html')
+    res.render('game.html', {
+      name: name
+    })
   }
 })
 
 app.get('/madlib', (req, res) => {
   console.log(req.query);
-  const person = req.query.person;
-  const color = req.query.color;
-  const noun = req.query.noun;
-  const adj = req.query.adjective;
+  // const person = req.query.person;
+  // const color = req.query.color;
+  // const noun = req.query.noun;
+  // const adj = req.query.adjective;
+  // same as below
+
+  const {person, color, noun, adjective: adj } = req.query
 
   res.render('madlib.html.njk', {
     person: person,
